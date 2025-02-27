@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 import jwt
-from mangum import Mangum  # This is the key addition
 
 # Secret key for JWT encoding and decoding
 SECRET_KEY = "supersecretkey"
@@ -80,6 +79,3 @@ async def protected_route(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
-
-# Use Mangum to make the FastAPI app compatible with serverless environments
-handler = Mangum(app)
